@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System;
 using programming_project.model;
 
 namespace programming_project
@@ -7,8 +8,18 @@ namespace programming_project
     {
         static void Main(string[] args)
         {
-            User user = new User();
-            Console.WriteLine($"Total: {user.test(new double[] {2.5, 2.5})}");
+            List<int> numbers = new List<int>();
+            
+            for (int i = 0; i < 2; i++)
+            {
+                Console.WriteLine("Ingrese un número");
+                numbers.Add(Convert.ToInt32(Console.ReadLine()));
+            }
+
+            foreach (var item in numbers)
+            {
+                Console.WriteLine(item);
+            }
         }
     }
 }
