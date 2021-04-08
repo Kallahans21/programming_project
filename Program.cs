@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
-using programming_project.model;
+using programming_project.controllers;
 
 namespace programming_project
 {
@@ -8,18 +8,12 @@ namespace programming_project
     {
         static void Main(string[] args)
         {
-            List<int> numbers = new List<int>();
-            
-            for (int i = 0; i < 2; i++)
-            {
-                Console.WriteLine("Ingrese un número");
-                numbers.Add(Convert.ToInt32(Console.ReadLine()));
-            }
+            initialization();
+        }
 
-            foreach (var item in numbers)
-            {
-                Console.WriteLine(item);
-            }
+        static void initialization(){
+            UserController user = new UserController();
+            user.init();
         }
     }
 }
