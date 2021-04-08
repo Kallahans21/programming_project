@@ -12,7 +12,10 @@ namespace programming_project.controllers
         }
 
         public static void getUsers(){
+          /* Instace of UserModel to get properties */
           UserModel user = new UserModel();
+
+          /* The list is created to be able to add objects */
           List<UserModel> userList = new List<UserModel>();
           userList.Add(user);
         }
