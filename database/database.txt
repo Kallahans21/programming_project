@@ -1,1 +1,3 @@
-This is my database file
+josue ayala|20150240|nissan centra 2020 modelo nuevo|90.40
+valeria ester|25312562|toyota|12.99
+Gabriela Sofia|31293819|kia|12.99

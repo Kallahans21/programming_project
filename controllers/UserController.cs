@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using programming_project.model;
-using System.IO;
+using programming_project.utils;
 
 namespace programming_project.controllers
 {
@@ -9,10 +9,12 @@ namespace programming_project.controllers
   {
 
     private static string[] userInformation = new string[2];
+    private static bool isInvalidLogin = false;
 
     public void init()
     {
-      auth();
+      /* auth(); */
+      get();
     }
 
     public static void getUsers()
@@ -33,13 +35,26 @@ namespace programming_project.controllers
       Console.WriteLine("1) Iniciar sesión.");
       Console.WriteLine("2) Registrar usuario.");
 
-      switch (Convert.ToInt32(Console.ReadLine()))
+      if (isInvalidLogin)
+      {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Ingresa un número valido");
+        Console.WriteLine("");
+        Console.ForegroundColor = ConsoleColor.White;
+      }
+
+      int selected = Convert.ToInt32(Console.ReadLine());
+      switch (selected)
       {
         case 1:
           login();
           break;
         case 2:
           register();
+          break;
+        default:
+          isInvalidLogin = true;
+          auth();
           break;
       }
     }
@@ -89,9 +104,6 @@ namespace programming_project.controllers
         }
 
       } while (!authtenticated);
-
-      /* if the information is correct, go to the next method */
-      /* Console.WriteLine($"Tu usuario es {userInformation[0]}"); */
       prueba();
     }
 
@@ -131,6 +143,22 @@ namespace programming_project.controllers
       System.IO.File.AppendAllLines(@"database\user.txt", userData);
       Console.ReadKey();
       login();
+    }
+
+    private static void get()
+    {
+      string[] data = System.IO.File.ReadAllLines(@"database\database.txt");
+      Table table = new Table();
+      table.PrintLine();
+      Console.ForegroundColor = ConsoleColor.Green;
+      table.PrintRow("Nombre cliente", "DUI", "Vehiculo", "Reparación");
+      Console.ForegroundColor = ConsoleColor.White;
+      table.PrintLine();
+      foreach (var item in data)
+      {
+        table.PrintRow(item.Split("|")[0], item.Split("|")[1], item.Split("|")[2], item.Split("|")[3]);
+        table.PrintLine();
+      }
     }
   }
 }
