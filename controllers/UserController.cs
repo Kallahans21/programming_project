@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using programming_project.model;
 using programming_project.utils;
+using System.IO;
 
 namespace programming_project.controllers
 {
@@ -66,10 +67,19 @@ namespace programming_project.controllers
     private static void login()
     {
       /* Creation of array yo get user data */
-      string[] userData = new string[2];
-      string[] text = System.IO.File.ReadAllLines(@"database\user.txt");
-
-      bool authtenticated = false, incorrectData = false;
+            string[] userData = new string[2];
+            
+            string path1 = "C:/Users/14AM012LA/Documents/Programacion Estructurada/programming_project/database/user2.txt";
+            
+            // Create a new file to write to.
+            using (StreamWriter sw = File.CreateText(path1))
+                {
+                    sw.WriteLine("prueba");
+                    string[] text = System.IO.File.ReadAllLines(path1);
+                }
+            
+           
+            bool authtenticated = false, incorrectData = false;
       /* Validate if the information is correct */
       do
       {
@@ -103,17 +113,17 @@ namespace programming_project.controllers
         Console.WriteLine("Ingresa tu contraseña");
         userData[1] = Console.ReadLine();
         incorrectData = true;
-        foreach (var item in text)
-        {
-          if (item.Split('|')[0] == userData[0] && item.Split('|')[1] == userData[1])
-          {
-            userInformation[0] = item.Split('|')[0];
-            authtenticated = true;
-            incorrectData = false;
-          }
-        }
+                foreach (var item in text)
+                {
+                    if (item.Split('|')[0] == userData[0] && item.Split('|')[1] == userData[1])
+                    {
+                        userInformation[0] = item.Split('|')[0];
+                        authtenticated = true;
+                        incorrectData = false;
+                    }
+                }
 
-      } while (!authtenticated);
+            } while (!authtenticated);
       sesion();
     }
 
@@ -175,6 +185,7 @@ namespace programming_project.controllers
       Console.WriteLine("Se creo el usuario correctamente, presiona cualquie tecla para iniciar sesión con tu nuevo usuario");
       Console.ForegroundColor = ConsoleColor.White;
       System.IO.File.AppendAllLines(@"database\user.txt", userData);
+
       Console.ReadKey();
       login();
     }
