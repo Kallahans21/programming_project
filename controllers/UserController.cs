@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using programming_project.model;
 using programming_project.utils;
+using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace programming_project.controllers
@@ -22,6 +22,7 @@ namespace programming_project.controllers
 
         public static void CreateFolder()
         {
+            /*If folder doesn't exit, create new folder. If it exists, don't*/
             try
             {
                 string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -30,15 +31,18 @@ namespace programming_project.controllers
                     Console.WriteLine("That path exists already.");
                     return;
                 }
+
                 System.IO.Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project"));
-                System.IO.File.CreateText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt");
-                System.IO.File.CreateText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/database.txt");
+                var users = System.IO.File.CreateText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt");
+                var database = System.IO.File.CreateText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/database.txt");
+                users.Close();
+                database.Close();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-            
+
         }
         public static void getUsers()
         {
@@ -195,13 +199,13 @@ namespace programming_project.controllers
             userData[0] += Console.ReadLine();
             Console.WriteLine("Ingresa tu clave");
             userData[0] += $"|{Console.ReadLine()}";
-           
+            System.IO.File.AppendAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt", userData);
 
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Se creo el usuario correctamente, presiona cualquie tecla para iniciar sesión con tu nuevo usuario");
             Console.ForegroundColor = ConsoleColor.White;
-            System.IO.File.AppendAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt", userData);
+            
 
             Console.ReadKey();
             login();
