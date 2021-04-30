@@ -11,6 +11,7 @@ namespace programming_project.controllers
 
         private static string[] userInformation = new string[2];
         private static bool isInvalidLogin = false;
+        
 
         public void init()
         {
@@ -22,21 +23,18 @@ namespace programming_project.controllers
 
         public static void CreateFolder()
         {
-            /*If folder doesn't exit, create new folder. If it exists, don't*/
+            /*If folder doesn't exist, create new folder. If it exists, don't*/
             try
-            {
+            { 
                 string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                if (Directory.Exists(path + "project"))
-                {
-                    Console.WriteLine("That path exists already.");
-                    return;
-                }
 
-                System.IO.Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project"));
-                var users = System.IO.File.CreateText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt");
-                var database = System.IO.File.CreateText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/database.txt");
-                users.Close();
-                database.Close();
+                if (Directory.Exists(path + "project")==false)
+                {
+                    System.IO.Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project"));
+                }
+                
+                System.IO.File.AppendAllText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt", null);
+                System.IO.File.AppendAllText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/database.txt", null);
             }
             catch (Exception e)
             {
@@ -63,7 +61,7 @@ namespace programming_project.controllers
             Console.WriteLine("Que accion desea realizar: ");
             Console.WriteLine("1) Iniciar sesión.");
             Console.WriteLine("2) Registrar usuario.");
-
+            
             /* If the login is invalid, an error message is displayed */
             if (isInvalidLogin)
             {
@@ -92,6 +90,8 @@ namespace programming_project.controllers
 
         private static void login()
         {
+            ///*Create folder and txt if user chose to login first*/
+            //CreateFolder();
             /* Creation of array yo get user data */
             string[] userData = new string[2];
 
@@ -160,6 +160,7 @@ namespace programming_project.controllers
             Console.WriteLine("1) Agregar cliente.");
             Console.WriteLine("2) Mostrar todos los clientes.");
             Console.WriteLine("3) Buscar cliente.");
+            Console.WriteLine("4) Regresar.");
 
             /* It is redirected to the corresponding method according to the selected option */
             switch (Convert.ToInt32(Console.ReadLine()))
@@ -172,6 +173,9 @@ namespace programming_project.controllers
                     break;
                 case 3:
                     searchClient();
+                    break;
+                case 4:
+                    auth();
                     break;
             }
         }
@@ -199,13 +203,17 @@ namespace programming_project.controllers
             userData[0] += Console.ReadLine();
             Console.WriteLine("Ingresa tu clave");
             userData[0] += $"|{Console.ReadLine()}";
+
+            //Escribir = new StreamWriter($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt");
+            //Escribir.WriteLine(userData[0]);
+            //Escribir.Close();
             System.IO.File.AppendAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt", userData);
 
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Se creo el usuario correctamente, presiona cualquie tecla para iniciar sesión con tu nuevo usuario");
             Console.ForegroundColor = ConsoleColor.White;
-            
+
 
             Console.ReadKey();
             login();
@@ -285,5 +293,6 @@ namespace programming_project.controllers
             }
             sesion();
         }
+
     }
 }
