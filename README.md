@@ -1,15 +1,15 @@
 ## Proyecto de Programación 💻
 
 ### Integrantes del equipo de trabajo G04L 👾
--Ayala Martínez, Josué Alfonso     AM210971
+- Ayala Martínez, Josué Alfonso     AM210971
 
--Munguía Villacorta, Luciana Maria MV210941
+- Munguía Villacorta, Luciana Maria MV210941
 
--Regalado Villalta, César Enrrique RV210723
+- Regalado Villalta, César Enrrique RV210723
 
--Salas Bojorquez, Kallahan Andrea  SB210537
+- Salas Bojorquez, Kallahan Andrea  SB210537
 
--Velásquez Joyar, Andrea Guadalupe VJ210576
+- Velásquez Joyar, Andrea Guadalupe VJ210576
 
 ## Archivos adjuntados 📤
  [Manual del usuario 📜](https://drive.google.com/drive/folders/1x4mEqJIhOyMu0dhfVSZFy6rB9AnamTIc?usp=sharing)
