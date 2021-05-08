@@ -12,13 +12,11 @@ namespace programming_project.controllers
         private static string[] userInformation = new string[2];
         private static bool isInvalidLogin = false;
         
-
         public void init()
         {
             /* The application is initialized with the auth */
             CreateFolder();
             auth();
-
         }
 
         public static void CreateFolder()
@@ -28,28 +26,19 @@ namespace programming_project.controllers
             { 
                 string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-                if (Directory.Exists(path + "project")==false)
+                if (Directory.Exists(path + "programming_project")==false)
                 {
-                    System.IO.Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project"));
+                    System.IO.Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project"));
                 }
                 
-                System.IO.File.AppendAllText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt", null);
-                System.IO.File.AppendAllText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/database.txt", null);
+                System.IO.File.AppendAllText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project")}/user.txt", null);
+                System.IO.File.AppendAllText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project")}/database.txt", null);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
 
-        }
-        public static void getUsers()
-        {
-            /* Instace of UserModel to get properties */
-            UserModel user = new UserModel();
-
-            /* The list is created to be able to add objects */
-            List<UserModel> userList = new List<UserModel>();
-            userList.Add(user);
         }
 
         /* Authtentication function | method */
@@ -95,7 +84,7 @@ namespace programming_project.controllers
             /* Creation of array yo get user data */
             string[] userData = new string[2];
 
-            string[] text = System.IO.File.ReadAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt");
+            string[] text = System.IO.File.ReadAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project")}/user.txt");
 
 
 
@@ -166,7 +155,7 @@ namespace programming_project.controllers
             switch (Convert.ToInt32(Console.ReadLine()))
             {
                 case 1:
-                    /* login(); */
+                    createUser();
                     break;
                 case 2:
                     get();
@@ -178,6 +167,65 @@ namespace programming_project.controllers
                     auth();
                     break;
             }
+        }
+
+        private static void createUser(){
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"¡Sesión iniciada como: {userInformation[0]}!");
+            Console.WriteLine("");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Ingresar nuevo cliente");
+            Console.WriteLine("");
+            string[] customerInformation = new string[5]; /* Position 5 is to evaluate how many times you have entered */
+            string[] userData = new string[1];
+            string[] infoToGet = {"nombre", "DUI cliente", "vehículo", "costo de reparación"};
+            int index = 0;
+            foreach (var item in infoToGet)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write($"Ingrese el {item}: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                customerInformation[index] = Console.ReadLine();
+                index++;
+            }
+            customerInformation[4] = "1";
+
+            /* Verify user */
+            string[] registers = System.IO.File.ReadAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project")}/database.txt");
+            int match = 0;
+            foreach (var item in registers)
+            {
+                if (customerInformation[1] == item.Split('|')[1]){ match++; }
+            }
+            if (match > 2){ customerInformation[3] = Convert.ToString(Convert.ToDouble(customerInformation[3]) - (Convert.ToDouble(customerInformation[3]) * 5) / 100); }
+            if (match > 10){ customerInformation[3] = Convert.ToString(Convert.ToDouble(customerInformation[3]) - (Convert.ToDouble(customerInformation[3]) * 10) / 100); }
+            
+            foreach (var item in customerInformation) { userData[0] += $"{item}|"; }
+            userData[0] = userData[0].TrimEnd('|');
+
+            Console.WriteLine("");
+            if (match > 2){
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Al cliente se le aplico un ${5}% de descuento, por sus {match} vistas anteriores");
+                Console.ForegroundColor = ConsoleColor.White;
+            } else if (match > 10){
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Al cliente se le aplico un ${10}% de descuento, por sus {match} vistas anteriores");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
+            System.IO.File.AppendAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project")}/database.txt", userData);
+
+            Console.WriteLine("");
+            Console.Write("¿Deseas agregar un cliente de nuevo? (y/n)");
+            switch (Console.ReadLine())
+            {
+                case "y":
+                    createUser();
+                break;
+            }
+            sesion();
         }
 
         private static void register()
@@ -194,7 +242,7 @@ namespace programming_project.controllers
             {
                 case "y":
                     auth();
-                    break;
+                break;
             }
 
             /* The data is requested to be able to be registered in the .txt file */
@@ -203,11 +251,7 @@ namespace programming_project.controllers
             userData[0] += Console.ReadLine();
             Console.WriteLine("Ingresa tu clave");
             userData[0] += $"|{Console.ReadLine()}";
-
-            //Escribir = new StreamWriter($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt");
-            //Escribir.WriteLine(userData[0]);
-            //Escribir.Close();
-            System.IO.File.AppendAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/user.txt", userData);
+            System.IO.File.AppendAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project")}/user.txt", userData);
 
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
@@ -221,7 +265,7 @@ namespace programming_project.controllers
 
         private static void get()
         {
-            string[] data = System.IO.File.ReadAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/database.txt");
+            string[] data = System.IO.File.ReadAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project")}/database.txt");
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"¡Sesión iniciada como: {userInformation[0]}!");
@@ -245,7 +289,7 @@ namespace programming_project.controllers
             {
                 case "y":
                     get();
-                    break;
+                break;
             }
             sesion();
         }
@@ -263,7 +307,7 @@ namespace programming_project.controllers
             Console.Write("Ingrese DUI: ");
             Console.ForegroundColor = ConsoleColor.White;
             string client = Console.ReadLine(), clienReceive = null;
-            string[] data = System.IO.File.ReadAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "project")}/database.txt");
+            string[] data = System.IO.File.ReadAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project")}/database.txt");
             Table table = new Table();
             foreach (var item in data)
             {
