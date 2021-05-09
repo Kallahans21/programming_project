@@ -11,7 +11,7 @@ namespace programming_project.controllers
 
         private static string[] userInformation = new string[2];
         private static bool isInvalidLogin = false;
-        
+
         public void init()
         {
             /* The application is initialized with the auth */
@@ -23,14 +23,14 @@ namespace programming_project.controllers
         {
             /*If folder doesn't exist, create new folder. If it exists, don't*/
             try
-            { 
+            {
                 string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-                if (Directory.Exists(path + "programming_project")==false)
+                if (Directory.Exists(path + "programming_project") == false)
                 {
                     System.IO.Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project"));
                 }
-                
+
                 System.IO.File.AppendAllText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project")}/user.txt", null);
                 System.IO.File.AppendAllText($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project")}/database.txt", null);
             }
@@ -50,7 +50,7 @@ namespace programming_project.controllers
             Console.WriteLine("Que accion desea realizar: ");
             Console.WriteLine("1) Iniciar sesión.");
             Console.WriteLine("2) Registrar usuario.");
-            
+
             /* If the login is invalid, an error message is displayed */
             if (isInvalidLogin)
             {
@@ -169,7 +169,8 @@ namespace programming_project.controllers
             }
         }
 
-        private static void createUser(){
+        private static void createUser()
+        {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"¡Sesión iniciada como: {userInformation[0]}!");
@@ -179,7 +180,7 @@ namespace programming_project.controllers
             Console.WriteLine("");
             string[] customerInformation = new string[5]; /* Position 5 is to evaluate how many times you have entered */
             string[] userData = new string[1];
-            string[] infoToGet = {"nombre", "DUI cliente", "vehículo", "costo de reparación"};
+            string[] infoToGet = { "nombre", "DUI cliente", "vehículo", "costo de reparación" };
             int index = 0;
             foreach (var item in infoToGet)
             {
@@ -196,23 +197,28 @@ namespace programming_project.controllers
             int match = 0;
             foreach (var item in registers)
             {
-                if (customerInformation[1] == item.Split('|')[1]){ match++; }
+                if (customerInformation[1] == item.Split('|')[1]) { match++; }
             }
-            if (match > 2){ customerInformation[3] = Convert.ToString(Convert.ToDouble(customerInformation[3]) - (Convert.ToDouble(customerInformation[3]) * 5) / 100); }
-            if (match > 10){ customerInformation[3] = Convert.ToString(Convert.ToDouble(customerInformation[3]) - (Convert.ToDouble(customerInformation[3]) * 10) / 100); }
-            
+            if (match > 2) { customerInformation[3] = Convert.ToString(Convert.ToDouble(customerInformation[3]) - (Convert.ToDouble(customerInformation[3]) * 5) / 100); }
+            if (match > 10) { customerInformation[3] = Convert.ToString(Convert.ToDouble(customerInformation[3]) - (Convert.ToDouble(customerInformation[3]) * 10) / 100); }
+
             foreach (var item in customerInformation) { userData[0] += $"{item}|"; }
             userData[0] = userData[0].TrimEnd('|');
 
             Console.WriteLine("");
-            if (match > 2){
+            if (match > 2)
+            {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Al cliente se le aplico un ${5}% de descuento, por sus {match} vistas anteriores");
                 Console.ForegroundColor = ConsoleColor.White;
-            } else if (match > 10){
+                Console.WriteLine($"El nuevo costo de reparación es de {Math.Round(Convert.ToDouble(customerInformation[3]) * 0.95, 2)}");
+            }
+            else if (match > 10)
+            {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Al cliente se le aplico un ${10}% de descuento, por sus {match} vistas anteriores");
                 Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"El nuevo costo de reparación es de {Math.Round(Convert.ToDouble(customerInformation[3]) * 0.9, 2)}");
             }
 
             System.IO.File.AppendAllLines($"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "programming_project")}/database.txt", userData);
@@ -223,7 +229,7 @@ namespace programming_project.controllers
             {
                 case "y":
                     createUser();
-                break;
+                    break;
             }
             sesion();
         }
@@ -242,7 +248,7 @@ namespace programming_project.controllers
             {
                 case "y":
                     auth();
-                break;
+                    break;
             }
 
             /* The data is requested to be able to be registered in the .txt file */
@@ -289,7 +295,7 @@ namespace programming_project.controllers
             {
                 case "y":
                     get();
-                break;
+                    break;
             }
             sesion();
         }
